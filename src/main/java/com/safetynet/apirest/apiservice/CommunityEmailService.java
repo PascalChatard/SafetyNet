@@ -48,6 +48,8 @@ public class CommunityEmailService {
 
 		List<Person> persons = dataSrc.getPersons();
 
+		// recherche la/les Person(s) dont la city est: city
+		// recupere et place l'email dans la liste emails
 		List<String> emails = persons.stream().filter(p -> !p.getCity().isEmpty() && p.getCity().contentEquals(city))
 				.map(Person::getEmail).collect(Collectors.toList());
 
