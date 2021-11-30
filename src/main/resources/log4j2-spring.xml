@@ -5,8 +5,8 @@
           <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
         <RollingFile name="RollingFile"
-            fileName="./logs/dataloader-logger-log4j2.log"
-            filePattern="./logs/$${date:yyyy-MM}/dataloader-logger-log4j2-%d{-dd-MMMM-yyyy}-%i.log.gz">
+            fileName="./logs/apisafetynetalerts.log"
+            filePattern="./logs/$${date:yyyy-MM}/apisafetynetalerts-%d{-dd-MMMM-yyyy}-%i.log.gz">
             <PatternLayout>
                 <pattern>%d %p %C{1.} [%t] %m%n</pattern>
             </PatternLayout>
@@ -27,8 +27,8 @@
           <AppenderRef ref="Console"></AppenderRef>
           <AppenderRef ref="RollingFile" />			
         </Root>
-		<!-- LOG "com.pc.dataloader*" at DEBUG level -->
-        <Logger name="com.pc.dataloader" level="debug" additivity="false">
+		<!-- LOG "com.safetynet.apirest*" at DEBUG level -->
+        <Logger name="com.safetynet.apirest" level="debug" additivity="false">
           <AppenderRef ref="Console"/>
           <AppenderRef ref="RollingFile" />			
         </Logger>
