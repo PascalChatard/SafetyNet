@@ -34,15 +34,7 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord> {
 	}
 
 
-	/**
-	 * Supprime l'objet MedicalRecord positionne a l'index id, appelle la methode
-	 * remove de la liste de MedicalRecord depuis le dataSrc.
-	 * 
-	 * @param id, le numero d'index du dossier medical a supprimer de la base de
-	 *        donnees
-	 * @return une reference a l'objet supprime dans dataSrc
-	 * 
-	 */
+
 	@Override
 	public MedicalRecord deleteById(int id)
 			throws IndexOutOfBoundsException, NullPointerException, NullDataSrcException {
@@ -58,14 +50,7 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord> {
 		return medicalRecord;
 	}
 
-	/**
-	 * Ajoute l'objet MedicalRecord dans le DataSrc dataSrc, appelle la methode add
-	 * de la liste de MedicalRecord depuis le dataSrc.
-	 * 
-	 * @param medicalRecord, l'objet MedicalRecord a ajouter dans la base de donnees
-	 * @return une reference a l'objet ajouter dans dataSrc
-	 * 
-	 */
+
 	@Override
 	public MedicalRecord save(MedicalRecord medicalRecord) throws NullPointerException, NullDataSrcException {
 
@@ -83,17 +68,7 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord> {
 		return medicalRecord;
 	}
 
-	/**
-	 * Update l'objet MedicalRecord positionne a l'index id dans le DataSrc dataSrc,
-	 * appelle les methodes get et set de la liste de MedicalRecord depuis le
-	 * dataSrc.
-	 * 
-	 * @param id, index de l'objet MedicalRecord a modifier
-	 * @param medicalRecord, l'objet MedicalRecord a modifier dans la base de
-	 *        donnees
-	 * @return une reference a l'objet modifier dans dataSrc
-	 * 
-	 */
+
 	@Override
 	public MedicalRecord update(int id, MedicalRecord medicalRecordUp)
 			throws IndexOutOfBoundsException, NullPointerException, NullDataSrcException {

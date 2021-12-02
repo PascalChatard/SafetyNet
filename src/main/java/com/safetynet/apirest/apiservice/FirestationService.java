@@ -190,16 +190,19 @@ public class FirestationService {
 	}
 
 	private boolean isPersonLiveAtThisAddress(Person person, String address) {
+
 		return StringUtils.isNotEmpty(person.getAddress())
 				&& StringUtils.compareIgnoreCase(person.getAddress(), address) == 0;
 	}
 
 	private boolean isStationNumberOfFirestation(Firestation firestation, String stationNumber) {
+
 		return StringUtils.isNotEmpty(firestation.getStation())
 				&& StringUtils.compareIgnoreCase(firestation.getStation(), stationNumber) == 0;
 	}
 
 	private boolean isMedicalRecordOfThisPerson(MedicalRecord medicalRecord, Person person) {
+
 		return StringUtils.isNotEmpty(medicalRecord.getFirstName()) && StringUtils.isNotEmpty(person.getFirstName())
 				&& StringUtils.compareIgnoreCase(medicalRecord.getFirstName(), person.getFirstName()) == 0
 				&& StringUtils.isNotEmpty(medicalRecord.getLastName()) && StringUtils.isNotEmpty(person.getLastName())

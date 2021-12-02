@@ -3,6 +3,7 @@ package com.safetynet.apirest.apiservice;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,9 +49,8 @@ public class CommunityEmailService {
 
 		List<Person> persons = dataSrc.getPersons();
 
-		// recherche la/les Person(s) dont la city est: city
-		// recupere et place l'email dans la liste emails
-		List<String> emails = persons.stream().filter(p -> !p.getCity().isEmpty() && p.getCity().contentEquals(city))
+		// construit la liste des emails des Person(s) vivant a city
+		List<String> emails = persons.stream().filter(person -> isPersonLiveInCity(person, city))
 				.map(Person::getEmail).collect(Collectors.toList());
 
 		log.debug("La liste des emails des habitant de {} sont -->\n{}", city, JsonUtils.indenteJson(emails));
@@ -58,4 +58,8 @@ public class CommunityEmailService {
 		return emails;
 	}
 
+	private boolean isPersonLiveInCity(Person person, String city) {
+
+		return StringUtils.isNotEmpty(person.getCity()) && StringUtils.compareIgnoreCase(person.getCity(), city) == 0;
+	}
 }

@@ -68,6 +68,7 @@ public class PersonController {
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Person> deletePerson(HttpServletRequest request,
 			@PathVariable int id) {
+
 		log.info("Requete HTTP {}, Uri: {}", request.getMethod(), request.getRequestURI());
 		Person person = service.serviceDeleteById(id);
 
@@ -95,6 +96,7 @@ public class PersonController {
 	public ResponseEntity<Person> addPerson(HttpServletRequest request,
 			@Valid @RequestBody Person person)
 			throws JsonProcessingException {
+
 		log.info("Requete HTTP {}, Uri: {}", request.getMethod(), request.getRequestURI());
 		Person addPerson = service.serviceSave(person);
 
@@ -127,6 +129,7 @@ public class PersonController {
 	public ResponseEntity<Person> updatePerson(HttpServletRequest request, 
 			@PathVariable int id,
 			@RequestBody Person person) throws JsonProcessingException {
+
 		log.info("Requete HTTP {}, Uri: {}", request.getMethod(), request.getRequestURI());
 		Person updatePerson = service.serviceUpdate(id, person);
 
