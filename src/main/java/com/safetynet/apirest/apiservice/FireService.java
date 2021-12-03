@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -106,12 +107,16 @@ public class FireService {
 	}
 
 	private boolean isFirestationServeThisAddress(Firestation firestation, String address) {
-		return (!firestation.getAddress().isEmpty() && firestation.getAddress().contentEquals(address));
+
+		return (StringUtils.isNotEmpty(firestation.getAddress()) && StringUtils.isNotEmpty(address)
+				&& StringUtils.compareIgnoreCase(firestation.getAddress(), address) == 0);
 	}
 
-	private boolean isMedicalRecordOfThisPerson(MedicalRecord medicalRecord, Person person) {
-		return (!medicalRecord.getFirstName().isEmpty()
-				&& medicalRecord.getFirstName().contentEquals(person.getFirstName())
-				&& !medicalRecord.getLastName().isEmpty());
+	private boolean isMedicalRecordOfThisPerson(final MedicalRecord medicalRecord, final Person person) {
+
+		return (StringUtils.isNotEmpty(medicalRecord.getFirstName()) && StringUtils.isNotEmpty(person.getFirstName())
+				&& StringUtils.compareIgnoreCase(medicalRecord.getFirstName(), person.getFirstName()) == 0
+				&& StringUtils.isNotEmpty(medicalRecord.getLastName()) && StringUtils.isNotEmpty(person.getLastName())
+				&& StringUtils.compareIgnoreCase(medicalRecord.getLastName(), person.getLastName()) == 0);
 	}
 }

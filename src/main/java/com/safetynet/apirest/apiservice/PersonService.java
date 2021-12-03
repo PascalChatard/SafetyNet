@@ -1,4 +1,4 @@
-package com.safetynet.apirest.service;
+package com.safetynet.apirest.apiservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

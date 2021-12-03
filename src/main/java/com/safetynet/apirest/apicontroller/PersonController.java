@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.safetynet.apirest.apiservice.PersonService;
 import com.safetynet.apirest.model.DataSrc;
 import com.safetynet.apirest.model.Person;
-import com.safetynet.apirest.service.PersonService;
 import com.safetynet.apirest.utils.JsonUtils;
 
 import lombok.extern.slf4j.Slf4j;

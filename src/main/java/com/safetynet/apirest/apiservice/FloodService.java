@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -128,18 +129,24 @@ public class FloodService {
 		return result;
 	}
 
-	private boolean isStationNumberOfFirestation(Firestation firestation, String stationNumber) {
-		return (!firestation.getStation().isEmpty() && firestation.getStation().contentEquals(stationNumber));
+	private boolean isStationNumberOfFirestation(final Firestation firestation, final String stationNumber) {
+
+		return (StringUtils.isNotEmpty(firestation.getStation()) && StringUtils.isNotEmpty(stationNumber)
+				&& StringUtils.compareIgnoreCase(firestation.getStation(), stationNumber) == 0);
 	}
 
-	private boolean isPersonLiveAtThisAddress(Person person, String address) {
-		return (!person.getAddress().isEmpty() && person.getAddress().contentEquals(address));
+	private boolean isPersonLiveAtThisAddress(final Person person, final String address) {
+
+		return (StringUtils.isNotEmpty(person.getAddress()) && StringUtils.isNotEmpty(address)
+				&& StringUtils.compareIgnoreCase(person.getAddress(), address) == 0);
 	}
 
-	private boolean isMedicalRecordOfThisPerson(MedicalRecord medicalRecord, Person person) {
-		return (!medicalRecord.getFirstName().isEmpty()
-				&& medicalRecord.getFirstName().contentEquals(person.getFirstName())
-				&& !medicalRecord.getLastName().isEmpty());
+	private boolean isMedicalRecordOfThisPerson(final MedicalRecord medicalRecord, final Person person) {
+
+		return (StringUtils.isNotEmpty(medicalRecord.getFirstName()) && StringUtils.isNotEmpty(person.getFirstName())
+				&& StringUtils.compareIgnoreCase(medicalRecord.getFirstName(), person.getFirstName()) == 0
+				&& StringUtils.isNotEmpty(medicalRecord.getLastName()) && StringUtils.isNotEmpty(person.getLastName())
+				&& StringUtils.compareIgnoreCase(medicalRecord.getLastName(), person.getLastName()) == 0);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,17 +89,21 @@ public class PersonInfoService {
 		return personInfos;
 	}
 
-	private boolean isFirstNameAndLastNameOfThisPerson(final String firsNameParam, final String lastNameParam,
+	private boolean isFirstNameAndLastNameOfThisPerson(final String firstNameParam, final String lastNameParam,
 			final Person person) {
-		return (!person.getFirstName().isEmpty() && person.getFirstName().contentEquals(firsNameParam)
-				&& !person.getLastName().isEmpty() && person.getLastName().contentEquals(lastNameParam));
+
+		return (StringUtils.isNotEmpty(person.getFirstName()) && StringUtils.isNotEmpty(firstNameParam)
+				&& StringUtils.compareIgnoreCase(person.getFirstName(), firstNameParam) == 0
+				&& StringUtils.isNotEmpty(person.getLastName()) && StringUtils.isNotEmpty(lastNameParam)
+				&& StringUtils.compareIgnoreCase(person.getLastName(), lastNameParam) == 0);
 	}
 
 	private boolean isMedicalRecordOfThisPerson(final MedicalRecord medicalRecord, final Person person) {
-		return (!medicalRecord.getFirstName().isEmpty()
-				&& medicalRecord.getFirstName().contentEquals(person.getFirstName())
-				&& !medicalRecord.getLastName().isEmpty()
-				&& medicalRecord.getLastName().contentEquals(person.getLastName()));
+
+		return (StringUtils.isNotEmpty(medicalRecord.getFirstName()) && StringUtils.isNotEmpty(person.getFirstName())
+				&& StringUtils.compareIgnoreCase(medicalRecord.getFirstName(), person.getFirstName()) == 0
+				&& StringUtils.isNotEmpty(medicalRecord.getLastName()) && StringUtils.isNotEmpty(person.getLastName())
+				&& StringUtils.compareIgnoreCase(medicalRecord.getLastName(), person.getLastName()) == 0);
 	}
 
 }

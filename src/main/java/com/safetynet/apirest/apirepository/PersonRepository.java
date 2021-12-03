@@ -49,6 +49,7 @@ public class PersonRepository implements IRepository<Person> {
 
 	@Override
 	public Person save(Person person) throws NullPointerException, NullDataSrcException {
+
 		if (dataSrc == null) {
 			log.error("Reference dataSrc null, pas d'acces aux donnees!!!!!!");
 			throw new NullDataSrcException();
@@ -75,6 +76,7 @@ public class PersonRepository implements IRepository<Person> {
 		Person person = dataSrc.getPersons().get(id);
 		// le nom et le prenom correspondent?
 		if (isMatchedIdentity(person, personUp)) {
+
 			person = dataSrc.getPersons().set(id, personUp);
 			log.debug("Mise à jour d'une personne avec succes, index: {} -->\n{}", id, JsonUtils.indenteJson(person));
 		} else
@@ -92,7 +94,7 @@ public class PersonRepository implements IRepository<Person> {
 	 * @return true si l'identite correspond
 	 * 
 	 */
-	private boolean isMatchedIdentity(Person personA, Person personB) {
+	private boolean isMatchedIdentity(final Person personA, final Person personB) {
 
 		return StringUtils.isNotEmpty(personA.getFirstName()) && StringUtils.isNotEmpty(personB.getFirstName())
 				&& StringUtils.compareIgnoreCase(personA.getFirstName(), personB.getFirstName()) == 0

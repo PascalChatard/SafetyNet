@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,9 +48,9 @@ public class PhoneAlertService {
 		log.debug("Debut methode listPhoneOfPersonsCoverByFirestation, arg: {}", station);
 		List<String> phones = new ArrayList<String>();
 
-		// recherche les adresses desservies par la caserne "station"
+		// construit la liste des adresses desservies par la caserne "station"
 		List<String> addresses = dataSrc.getFirestations().stream()
-				.filter(f -> !f.getStation().isEmpty() && f.getStation().contentEquals(station))
+				.filter(firestation -> isStationNumberOfFirestation(firestation, station))
 				.map(Firestation::getAddress).collect(Collectors.toList());
 		log.debug("Les adresses trouvees ({}) desservie par la caserne n°({})", addresses, station);
 
@@ -66,4 +67,12 @@ public class PhoneAlertService {
 		log.debug("Fin listPhoneOfPersonsCoverByFirestation");
 		return phones;
 	}
+
+
+	private boolean isStationNumberOfFirestation(final Firestation firestation, final String stationNumber) {
+
+		return (StringUtils.isNotEmpty(firestation.getStation()) && StringUtils.isNotEmpty(stationNumber)
+				&& StringUtils.compareIgnoreCase(firestation.getStation(), stationNumber) == 0);
+	}
+
 }

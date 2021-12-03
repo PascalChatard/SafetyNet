@@ -49,7 +49,24 @@ class PersonRepositoryTests {
 	}
 
 	@Test
+	final void testDeleteById_ThrowNullDataSrcException2() {
+
+		// GIVEN
+		classUnderTest = new PersonRepository(null);
+
+		// WHEN
+		try {
+			classUnderTest.deleteById(0);
+		}
+		// THEN
+		catch (NullDataSrcException e) {
+			assertThat(e.getMessage()).contains("  *** Reference dataSrc == null ***  ");
+		}
+	}
+
+	@Test
 	final void testDeleteById() {
+
 		// GIVEN
 		classUnderTest = new PersonRepository(dataSrc);
 		Person person = Person.builder().firstName("John").lastName("Boyd").address("1509 Culver St").city("Culver")
@@ -64,6 +81,7 @@ class PersonRepositoryTests {
 
 	@Test
 	final void testDeleteById_ThrowIndexOutOfBoundsException() {
+
 		// GIVEN
 		classUnderTest = new PersonRepository(dataSrc);
 
@@ -73,6 +91,7 @@ class PersonRepositoryTests {
 
 	@Test
 	final void testSave_ThrowNullDataSrcException() {
+
 		// GIVEN
 		classUnderTest = new PersonRepository(null);
 		Person person = new Person();
@@ -93,6 +112,7 @@ class PersonRepositoryTests {
 
 	@Test
 	final void testSave() {
+
 		// GIVEN
 		classUnderTest = new PersonRepository(dataSrc);
 		Person newPerson = Person.builder().firstName("Thierry").lastName("Thierry").address("17 Lot. Lou Campo")
@@ -107,6 +127,7 @@ class PersonRepositoryTests {
 
 	@Test
 	final void testUpdate_ThrowNullDataSrcException() {
+
 		// GIVEN
 		classUnderTest = new PersonRepository(null);
 		Person person = new Person();
@@ -138,9 +159,11 @@ class PersonRepositoryTests {
 
 	@Test
 	final void testUpdate_ThrowIndexOutOfBoundsException() {
+
 		// GIVEN
 		classUnderTest = new PersonRepository(dataSrc);
 		Person person = new Person();
+
 		// TTHEN
 		assertThrows(IndexOutOfBoundsException.class, () -> classUnderTest.update(5, person));
 	}

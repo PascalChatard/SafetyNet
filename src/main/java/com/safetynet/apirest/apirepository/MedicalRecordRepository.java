@@ -1,5 +1,6 @@
 package com.safetynet.apirest.apirepository;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -102,8 +103,12 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord> {
 	 */
 	private boolean isMatchedIdentity(MedicalRecord medicalRecordA, MedicalRecord medicalRecordB) {
 
-		return medicalRecordA.getFirstName().contentEquals(medicalRecordB.getFirstName())
-				&& medicalRecordA.getLastName().contentEquals(medicalRecordB.getLastName());
+		return StringUtils.isNotEmpty(medicalRecordA.getFirstName())
+				&& StringUtils.isNotEmpty(medicalRecordB.getFirstName())
+				&& StringUtils.compareIgnoreCase(medicalRecordA.getFirstName(), medicalRecordB.getFirstName()) == 0
+				&& StringUtils.isNotEmpty(medicalRecordA.getLastName())
+				&& StringUtils.isNotEmpty(medicalRecordB.getLastName())
+				&& StringUtils.compareIgnoreCase(medicalRecordA.getLastName(), medicalRecordB.getLastName()) == 0;
 	}
 
 }
