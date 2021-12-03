@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.safetynet.apirest.model.DataSrc;
-import com.safetynet.apirest.model.MedicalRecord;
 import com.safetynet.apirest.model.Person;
 import com.safetynet.apirest.model.PersonInfo;
+import com.safetynet.apirest.utils.DataSrcUtils;
 import com.safetynet.apirest.utils.DateUtils;
 import com.safetynet.apirest.utils.JsonUtils;
 
@@ -55,16 +54,19 @@ public class PersonInfoService {
 
 		List<PersonInfo> personInfos = new ArrayList<PersonInfo>();
 
-		// recherche la/les Person(s) ayant l'identite firsNameParam et lastNameParam
+		// construit la liste des Person(s) ayant l'identite firsNameParam et
+		// lastNameParam
 		List<Person> persons = dataSrc.getPersons().stream()
-				.filter(person -> isFirstNameAndLastNameOfThisPerson(firsNameParam, lastNameParam, person))
+				.filter(person -> DataSrcUtils.isFirstNameAndLastNameOfThisPerson(firsNameParam, lastNameParam, person))
 				.collect(Collectors.toList());
 		log.debug("Liste des Person trouve avec prenom ({}) et nom ({}):\n{}", firsNameParam, lastNameParam, persons);
 
 		// recherche le dossier medical de la/les Person(s) dont le firstName et le
-		// lastName sont: firsNameParam et lastNameParam
+		// lastName sont: firsNameParam et lastNameParam et construit la liste de
+		// PersonInfo
 		persons.forEach((Person person) -> {
-			dataSrc.getMedicalrecords().stream().filter(medicRcd -> isMedicalRecordOfThisPerson(medicRcd, person))
+			dataSrc.getMedicalrecords().stream()
+					.filter(medicRcd -> DataSrcUtils.isMedicalRecordOfThisPerson(medicRcd, person))
 					.forEach(medicRcd -> {
 						log.debug("Le dossier medical est trouve --> \n{}", JsonUtils.indenteJson(medicRcd));
 
@@ -87,23 +89,6 @@ public class PersonInfoService {
 				lastNameParam, JsonUtils.indenteJson(personInfos));
 		log.debug("Fin methode getNameAdrAgeEmailAndMedicalRecord");
 		return personInfos;
-	}
-
-	private boolean isFirstNameAndLastNameOfThisPerson(final String firstNameParam, final String lastNameParam,
-			final Person person) {
-
-		return (StringUtils.isNotEmpty(person.getFirstName()) && StringUtils.isNotEmpty(firstNameParam)
-				&& StringUtils.compareIgnoreCase(person.getFirstName(), firstNameParam) == 0
-				&& StringUtils.isNotEmpty(person.getLastName()) && StringUtils.isNotEmpty(lastNameParam)
-				&& StringUtils.compareIgnoreCase(person.getLastName(), lastNameParam) == 0);
-	}
-
-	private boolean isMedicalRecordOfThisPerson(final MedicalRecord medicalRecord, final Person person) {
-
-		return (StringUtils.isNotEmpty(medicalRecord.getFirstName()) && StringUtils.isNotEmpty(person.getFirstName())
-				&& StringUtils.compareIgnoreCase(medicalRecord.getFirstName(), person.getFirstName()) == 0
-				&& StringUtils.isNotEmpty(medicalRecord.getLastName()) && StringUtils.isNotEmpty(person.getLastName())
-				&& StringUtils.compareIgnoreCase(medicalRecord.getLastName(), person.getLastName()) == 0);
 	}
 
 }

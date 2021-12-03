@@ -3,12 +3,12 @@ package com.safetynet.apirest.apiservice;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.safetynet.apirest.model.DataSrc;
 import com.safetynet.apirest.model.Person;
+import com.safetynet.apirest.utils.DataSrcUtils;
 import com.safetynet.apirest.utils.JsonUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +50,7 @@ public class CommunityEmailService {
 		List<Person> persons = dataSrc.getPersons();
 
 		// construit la liste des emails des Person(s) vivant a city
-		List<String> emails = persons.stream().filter(person -> isPersonLiveInCity(person, city))
+		List<String> emails = persons.stream().filter(person -> DataSrcUtils.isCityOfThisPerson(person, city))
 				.map(Person::getEmail).collect(Collectors.toList());
 
 		log.debug("La liste des emails des habitant de {} sont -->\n{}", city, JsonUtils.indenteJson(emails));
@@ -58,8 +58,4 @@ public class CommunityEmailService {
 		return emails;
 	}
 
-	private boolean isPersonLiveInCity(Person person, String city) {
-
-		return StringUtils.isNotEmpty(person.getCity()) && StringUtils.compareIgnoreCase(person.getCity(), city) == 0;
-	}
 }

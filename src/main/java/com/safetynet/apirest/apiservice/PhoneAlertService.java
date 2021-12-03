@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.safetynet.apirest.model.DataSrc;
 import com.safetynet.apirest.model.Firestation;
+import com.safetynet.apirest.utils.DataSrcUtils;
 import com.safetynet.apirest.utils.JsonUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +50,7 @@ public class PhoneAlertService {
 
 		// construit la liste des adresses desservies par la caserne "station"
 		List<String> addresses = dataSrc.getFirestations().stream()
-				.filter(firestation -> isStationNumberOfFirestation(firestation, station))
+				.filter(firestation -> DataSrcUtils.isStationNumberOfFirestation(firestation, station))
 				.map(Firestation::getAddress).collect(Collectors.toList());
 		log.debug("Les adresses trouvees ({}) desservie par la caserne n°({})", addresses, station);
 
@@ -66,13 +66,6 @@ public class PhoneAlertService {
 
 		log.debug("Fin listPhoneOfPersonsCoverByFirestation");
 		return phones;
-	}
-
-
-	private boolean isStationNumberOfFirestation(final Firestation firestation, final String stationNumber) {
-
-		return (StringUtils.isNotEmpty(firestation.getStation()) && StringUtils.isNotEmpty(stationNumber)
-				&& StringUtils.compareIgnoreCase(firestation.getStation(), stationNumber) == 0);
 	}
 
 }

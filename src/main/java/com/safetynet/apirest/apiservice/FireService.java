@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +12,8 @@ import com.safetynet.apirest.model.DataSrc;
 import com.safetynet.apirest.model.Firestation;
 import com.safetynet.apirest.model.IdentityMedicalRecord;
 import com.safetynet.apirest.model.ListHabitantsByStationNumber;
-import com.safetynet.apirest.model.MedicalRecord;
 import com.safetynet.apirest.model.Person;
+import com.safetynet.apirest.utils.DataSrcUtils;
 import com.safetynet.apirest.utils.DateUtils;
 import com.safetynet.apirest.utils.JsonUtils;
 
@@ -60,7 +59,8 @@ public class FireService {
 
 		// recherche le numero de la firestation qui dessert cette adresse
 		Optional<String> optionalStationNumber = dataSrc.getFirestations().stream()
-				.filter(firestation -> isFirestationServeThisAddress(firestation, address)).map(Firestation::getStation)
+				.filter(firestation -> DataSrcUtils.isFirestationServeThisAddress(firestation, address))
+				.map(Firestation::getStation)
 				.findFirst();
 
 		// recupere le numero de station ou affecte le String vide
@@ -76,7 +76,7 @@ public class FireService {
 		// recherche le dossier medical de chaque personne habitant cette adresse
 		persons.forEach(person -> {
 			dataSrc.getMedicalrecords().stream()
-					.filter(medicalRecord -> isMedicalRecordOfThisPerson(medicalRecord, person))
+					.filter(medicalRecord -> DataSrcUtils.isMedicalRecordOfThisPerson(medicalRecord, person))
 					.forEach(medicalRecord -> {
 						log.debug("Dossier medical de la personne trouvee --> {}",
 								JsonUtils.indenteJson(medicalRecord));
@@ -106,17 +106,4 @@ public class FireService {
 		return listHabitantsByAddress;
 	}
 
-	private boolean isFirestationServeThisAddress(Firestation firestation, String address) {
-
-		return (StringUtils.isNotEmpty(firestation.getAddress()) && StringUtils.isNotEmpty(address)
-				&& StringUtils.compareIgnoreCase(firestation.getAddress(), address) == 0);
-	}
-
-	private boolean isMedicalRecordOfThisPerson(final MedicalRecord medicalRecord, final Person person) {
-
-		return (StringUtils.isNotEmpty(medicalRecord.getFirstName()) && StringUtils.isNotEmpty(person.getFirstName())
-				&& StringUtils.compareIgnoreCase(medicalRecord.getFirstName(), person.getFirstName()) == 0
-				&& StringUtils.isNotEmpty(medicalRecord.getLastName()) && StringUtils.isNotEmpty(person.getLastName())
-				&& StringUtils.compareIgnoreCase(medicalRecord.getLastName(), person.getLastName()) == 0);
-	}
 }

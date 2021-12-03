@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +14,7 @@ import com.safetynet.apirest.model.IdentityMedicalRecord;
 import com.safetynet.apirest.model.ListHousholdsByFirestationAndAddress;
 import com.safetynet.apirest.model.MedicalRecord;
 import com.safetynet.apirest.model.Person;
+import com.safetynet.apirest.utils.DataSrcUtils;
 import com.safetynet.apirest.utils.DateUtils;
 import com.safetynet.apirest.utils.JsonUtils;
 
@@ -65,7 +65,7 @@ public class FloodService {
 
 			// construit la liste des Firestation dont le station_numbers est: station
 			List<Firestation> firestations = dataSrc.getFirestations().stream()
-					.filter(firestation -> isStationNumberOfFirestation(firestation, station))
+					.filter(firestation -> DataSrcUtils.isStationNumberOfFirestation(firestation, station))
 					.collect(Collectors.toList());
 
 			firestations.forEach(firestation -> {
@@ -80,7 +80,7 @@ public class FloodService {
 
 				// construit la liste des Person qui habitent l'adresse desservie par la caserne
 				List<Person> persons = dataSrc.getPersons().stream()
-						.filter(person -> isPersonLiveAtThisAddress(person, firestation.getAddress()))
+						.filter(person -> DataSrcUtils.isPersonLiveAtThisAddress(person, firestation.getAddress()))
 						.collect(Collectors.toList());
 
 				persons.forEach(person -> {
@@ -93,7 +93,7 @@ public class FloodService {
 					// construit la liste le dossier medical de Person dont l'adresse est deservie
 					// par la station_numbers: station
 					List<MedicalRecord> medicalRecords = dataSrc.getMedicalrecords().stream()
-							.filter(medicalRecord -> isMedicalRecordOfThisPerson(medicalRecord, person))
+							.filter(medicalRecord -> DataSrcUtils.isMedicalRecordOfThisPerson(medicalRecord, person))
 							.collect(Collectors.toList());
 
 					medicalRecords.forEach(medicalRecord -> {
@@ -127,26 +127,6 @@ public class FloodService {
 				JsonUtils.indenteJson(result));
 		log.debug("Fin methode listOfHousholdServedByStation");
 		return result;
-	}
-
-	private boolean isStationNumberOfFirestation(final Firestation firestation, final String stationNumber) {
-
-		return (StringUtils.isNotEmpty(firestation.getStation()) && StringUtils.isNotEmpty(stationNumber)
-				&& StringUtils.compareIgnoreCase(firestation.getStation(), stationNumber) == 0);
-	}
-
-	private boolean isPersonLiveAtThisAddress(final Person person, final String address) {
-
-		return (StringUtils.isNotEmpty(person.getAddress()) && StringUtils.isNotEmpty(address)
-				&& StringUtils.compareIgnoreCase(person.getAddress(), address) == 0);
-	}
-
-	private boolean isMedicalRecordOfThisPerson(final MedicalRecord medicalRecord, final Person person) {
-
-		return (StringUtils.isNotEmpty(medicalRecord.getFirstName()) && StringUtils.isNotEmpty(person.getFirstName())
-				&& StringUtils.compareIgnoreCase(medicalRecord.getFirstName(), person.getFirstName()) == 0
-				&& StringUtils.isNotEmpty(medicalRecord.getLastName()) && StringUtils.isNotEmpty(person.getLastName())
-				&& StringUtils.compareIgnoreCase(medicalRecord.getLastName(), person.getLastName()) == 0);
 	}
 
 }

@@ -1,12 +1,12 @@
 package com.safetynet.apirest.apirepository;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.safetynet.apirest.exception.NullDataSrcException;
 import com.safetynet.apirest.model.DataSrc;
 import com.safetynet.apirest.model.MedicalRecord;
+import com.safetynet.apirest.utils.DataSrcUtils;
 import com.safetynet.apirest.utils.JsonUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -81,7 +81,7 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord> {
 
 		MedicalRecord medicalRecord = dataSrc.getMedicalrecords().get(id);
 		// le nom et le prenom correspondent?
-		if (isMatchedIdentity(medicalRecord, medicalRecordUp)) {
+		if (DataSrcUtils.isMatchedIdentity(medicalRecord, medicalRecordUp)) {
 			medicalRecord = dataSrc.getMedicalrecords().set(id, medicalRecord);
 
 			log.debug("Mise à jour du dossier medical avec succes, index ({}) --> \n{}", id,
@@ -91,24 +91,4 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord> {
 
 		return medicalRecord;
 	}
-
-	/**
-	 * isMatchedIdentity verifie la correspondance de l'identite, firstName et
-	 * lastName, sur deux instances MedicalRecord.
-	 * 
-	 * @param medicalRecordA, premirere instance de l'objet MedicalRecord
-	 * @param medicalRecordB, deuxieme instance de l'objet MedicalRecord
-	 * @return true si l'identite correspond
-	 * 
-	 */
-	private boolean isMatchedIdentity(MedicalRecord medicalRecordA, MedicalRecord medicalRecordB) {
-
-		return StringUtils.isNotEmpty(medicalRecordA.getFirstName())
-				&& StringUtils.isNotEmpty(medicalRecordB.getFirstName())
-				&& StringUtils.compareIgnoreCase(medicalRecordA.getFirstName(), medicalRecordB.getFirstName()) == 0
-				&& StringUtils.isNotEmpty(medicalRecordA.getLastName())
-				&& StringUtils.isNotEmpty(medicalRecordB.getLastName())
-				&& StringUtils.compareIgnoreCase(medicalRecordA.getLastName(), medicalRecordB.getLastName()) == 0;
-	}
-
 }

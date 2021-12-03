@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +11,8 @@ import com.safetynet.apirest.model.DataSrc;
 import com.safetynet.apirest.model.Identity;
 import com.safetynet.apirest.model.IdentityAge;
 import com.safetynet.apirest.model.ListChildByAddress;
-import com.safetynet.apirest.model.MedicalRecord;
 import com.safetynet.apirest.model.Person;
+import com.safetynet.apirest.utils.DataSrcUtils;
 import com.safetynet.apirest.utils.DateUtils;
 import com.safetynet.apirest.utils.JsonUtils;
 
@@ -65,7 +64,8 @@ public class ChildAlertService {
 		log.debug("Liste des Person trouve pour cette adresse: ({}):\n{}", address, persons);
 
 		persons.forEach((Person person) -> {
-			dataSrc.getMedicalrecords().stream().filter(medicRcd -> isMedicalRecordOfThisPerson(medicRcd, person))
+			dataSrc.getMedicalrecords().stream()
+					.filter(medicRcd -> DataSrcUtils.isMedicalRecordOfThisPerson(medicRcd, person))
 					.forEach(medicRcd -> {
 				// calcul l'age depuis la Birthdate
 				long years = DateUtils.getAge(medicRcd.getBirthdate());
@@ -108,11 +108,4 @@ public class ChildAlertService {
 		return listChildren;
 	}
 
-	private boolean isMedicalRecordOfThisPerson(final MedicalRecord medicalRecord, final Person person) {
-
-		return (StringUtils.isNotEmpty(medicalRecord.getFirstName()) && StringUtils.isNotEmpty(person.getFirstName())
-				&& StringUtils.compareIgnoreCase(medicalRecord.getFirstName(), person.getFirstName()) == 0
-				&& StringUtils.isNotEmpty(medicalRecord.getLastName()) && StringUtils.isNotEmpty(person.getLastName())
-				&& StringUtils.compareIgnoreCase(medicalRecord.getLastName(), person.getLastName()) == 0);
-	}
 }

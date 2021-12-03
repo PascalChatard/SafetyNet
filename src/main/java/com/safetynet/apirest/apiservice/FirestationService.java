@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +15,7 @@ import com.safetynet.apirest.model.IdentityAddrPhone;
 import com.safetynet.apirest.model.ListPersonsByFirestation;
 import com.safetynet.apirest.model.MedicalRecord;
 import com.safetynet.apirest.model.Person;
+import com.safetynet.apirest.utils.DataSrcUtils;
 import com.safetynet.apirest.utils.DateUtils;
 import com.safetynet.apirest.utils.JsonUtils;
 
@@ -137,7 +137,8 @@ public class FirestationService {
 		// construit la liste des adresses desservies par la caserne dont le
 		// sation_number est station
 		List<Firestation> firestations = dataSrc.getFirestations().stream()
-				.filter(firestation -> isStationNumberOfFirestation(firestation, station)).collect(Collectors.toList());
+				.filter(firestation -> DataSrcUtils.isStationNumberOfFirestation(firestation, station))
+				.collect(Collectors.toList());
 
 		for (Firestation firestation : firestations) {
 
@@ -146,7 +147,7 @@ public class FirestationService {
 			// construit la liste des Person(s) dont l'adresse correspond a la Firestation
 			// dont station_number = station
 			List<Person> persons = dataSrc.getPersons().stream()
-					.filter(person -> isPersonLiveAtThisAddress(person, firestation.getAddress()))
+					.filter(person -> DataSrcUtils.isPersonLiveAtThisAddress(person, firestation.getAddress()))
 					.collect(Collectors.toList());
 
 			for (Person person : persons) {
@@ -164,7 +165,7 @@ public class FirestationService {
 				// construit la liste de MedicalRecord de Person dont l'adresse est desservie
 				// par la Firestation
 				List<MedicalRecord> medicalRecords = dataSrc.getMedicalrecords().stream()
-						.filter(medicalRecord -> isMedicalRecordOfThisPerson(medicalRecord, person))
+						.filter(medicalRecord -> DataSrcUtils.isMedicalRecordOfThisPerson(medicalRecord, person))
 						.collect(Collectors.toList());
 
 				for (MedicalRecord medicalRecord : medicalRecords) {
@@ -189,24 +190,4 @@ public class FirestationService {
 		return listPersons;
 	}
 
-	private boolean isPersonLiveAtThisAddress(Person person, String address) {
-
-		return StringUtils.isNotEmpty(person.getAddress())
-				&& StringUtils.compareIgnoreCase(person.getAddress(), address) == 0;
-	}
-
-	private boolean isStationNumberOfFirestation(Firestation firestation, String stationNumber) {
-
-		return StringUtils.isNotEmpty(firestation.getStation())
-				&& StringUtils.compareIgnoreCase(firestation.getStation(), stationNumber) == 0;
-	}
-
-	private boolean isMedicalRecordOfThisPerson(MedicalRecord medicalRecord, Person person) {
-
-		return StringUtils.isNotEmpty(medicalRecord.getFirstName()) && StringUtils.isNotEmpty(person.getFirstName())
-				&& StringUtils.compareIgnoreCase(medicalRecord.getFirstName(), person.getFirstName()) == 0
-				&& StringUtils.isNotEmpty(medicalRecord.getLastName()) && StringUtils.isNotEmpty(person.getLastName())
-				&& StringUtils.compareIgnoreCase(medicalRecord.getLastName(), person.getLastName()) == 0;
-
-	}
 }

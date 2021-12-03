@@ -37,6 +37,7 @@ public class PersonService {
 	 */
 	public Person serviceDeleteById(int id)
 			throws IndexOutOfBoundsException, NullPointerException, NullDataSrcException {
+
 		log.debug("Debut methode serviceDeleteById, arg: {}", id);
 		Person person = repositoryPerson.deleteById(id);
 		log.debug("Succes suppression Person d'index({})  Person --> \n{}", id, JsonUtils.indenteJson(person));
@@ -53,6 +54,7 @@ public class PersonService {
 	 * 
 	 */
 	public Person serviceSave(Person person) throws NullPointerException, NullDataSrcException {
+
 		log.debug("Debut methode serviceSave, arg: {}", person);
 		Person newPerson = repositoryPerson.save(person);
 		log.debug("Succes ajout Person -->: \n{}", JsonUtils.indenteJson(newPerson));
