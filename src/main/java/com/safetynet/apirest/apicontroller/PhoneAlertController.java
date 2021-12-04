@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.safetynet.apirest.apiservice.PhoneAlertService;
 import com.safetynet.apirest.utils.JsonUtils;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -21,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
  * 
  */
 
+@Api(tags = "/phoneAlert?firestation=<firestation_number>", description = "Retourne une liste des numéros de téléphone des résidennts desservies par la caserne de pompiers.")
 @Slf4j
 @RestController
 public class PhoneAlertController {
@@ -41,6 +44,7 @@ public class PhoneAlertController {
 	 * @return la liste des numeros de telephone
 	 * 
 	 */
+	@ApiOperation(value = "Retourne une liste des numéros de téléphone des résidennts desservies par la caserne de pompiers.")
 	@GetMapping(value = "/phoneAlert")
 	public List<String> listPhoneOfPersonsCoverByFirestation(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam("firestation") String firestationNumber) {

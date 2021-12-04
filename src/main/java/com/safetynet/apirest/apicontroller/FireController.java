@@ -12,6 +12,8 @@ import com.safetynet.apirest.apiservice.FireService;
 import com.safetynet.apirest.model.ListHabitantsByStationNumber;
 import com.safetynet.apirest.utils.JsonUtils;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -20,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
  * 
  */
 
+@Api(tags = "/fire?address=<address>", description = "Retourne une liste des habitants vivant à l'adresse donnée ainsi que le numéro de la caserne de pomppiers la desservant.")
 @Slf4j
 @RestController
 public class FireController {
@@ -40,6 +43,7 @@ public class FireController {
 	 * @return la liste des personnes trouvees et le numero de la caserne
 	 * 
 	 */
+	@ApiOperation(value = "Les informations retenues sont: nom, age, numero de telephone et dossier medical.")
 	@GetMapping(value = "/fire")
 	public ListHabitantsByStationNumber listHabitantsOfAddress(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam("address") String address) {

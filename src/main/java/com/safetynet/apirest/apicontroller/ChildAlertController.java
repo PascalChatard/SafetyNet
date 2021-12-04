@@ -12,6 +12,8 @@ import com.safetynet.apirest.apiservice.ChildAlertService;
 import com.safetynet.apirest.model.ListChildByAddress;
 import com.safetynet.apirest.utils.JsonUtils;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -20,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
  * 
  */
 
+@Api(tags = "/childAlert?address=<address>", description = "Retourne une liste d'enfants habitant cette adresse.")
 @Slf4j
 @RestController
 public class ChildAlertController {
@@ -40,6 +43,7 @@ public class ChildAlertController {
 	 *         d'enfant retourne un objet vide.
 	 * 
 	 */
+	@ApiOperation(value = "Liste l'age, le prénom et le nom des enfants. Liste le prenom et le nom des adultes")
 	@GetMapping(value = "/childAlert")
 	public ListChildByAddress listOfChildrenLivingAtAddress(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam("address") String address) {

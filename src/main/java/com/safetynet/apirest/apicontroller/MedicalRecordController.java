@@ -20,6 +20,8 @@ import com.safetynet.apirest.model.DataSrc;
 import com.safetynet.apirest.model.MedicalRecord;
 import com.safetynet.apirest.utils.JsonUtils;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -28,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  * 
  */
 
+@Api(tags = "MedicalRecord", description = "API pour les opérations CRUD sur la ressource MedicalRecord.")
 @Slf4j
 @RestController
 @RequestMapping("/medicalRecord")
@@ -64,6 +67,7 @@ public class MedicalRecordController {
 	 * @return une reference a l'objet supprime dans la dataSrc
 	 * 
 	 */
+	@ApiOperation(value = "Supprime un élément de la ressource MedicalRecord à pârtir de so ID.")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<MedicalRecord> deleteMedicalRecord(HttpServletRequest request,
 			@PathVariable int id) {
@@ -71,7 +75,7 @@ public class MedicalRecordController {
 		log.info("Requete HTTP {}, Uri: {}", request.getMethod(), request.getRequestURI());
 		MedicalRecord medicalRecord = service.serviceDeleteById(id);
 
-		log.debug("Suppression d'un MedicalRecord avec succes, index : {} MedicalRecord:\n{}", id,
+		log.debug("Suppression d'un MedicalRecord avec succes, index ({)} MedicalRecord -->\n{}", id,
 				JsonUtils.indenteJson(medicalRecord));
 
 		ResponseEntity<MedicalRecord> responseEntity = ResponseEntity.ok(medicalRecord);
@@ -91,6 +95,7 @@ public class MedicalRecordController {
 	 * @return une reference a l'objet ajouter dans dataSrc
 	 * 
 	 */
+	@ApiOperation(value = "Ajoute un élément à la ressource MedicalRecord.")
 	@PostMapping()
 	public ResponseEntity<MedicalRecord> addFirestation(HttpServletRequest request,
 			@RequestBody MedicalRecord medicalRecord) {
@@ -101,7 +106,7 @@ public class MedicalRecordController {
 		int index = dataSrc.getMedicalrecords().indexOf(addMedicalRecord);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(index).toUri();
 
-		log.debug("Ajout d'un MedicalRecord avec succes, index : {} Person:\n{}",
+		log.debug("Ajout d'un MedicalRecord avec succes, index ({)} Person -->\n{}",
 				index, JsonUtils.indenteJson(addMedicalRecord));
 
 		ResponseEntity<MedicalRecord> responseEntity = ResponseEntity.created(location).body(addMedicalRecord);
@@ -123,6 +128,7 @@ public class MedicalRecordController {
 	 * @return une reference a l'objet modifier dans dataSrc
 	 * 
 	 */
+	@ApiOperation(value = "Modifie un élément de la ressource MedicalRecord à pârtir de so ID.")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<MedicalRecord> updatePerson(HttpServletRequest request,
 			@PathVariable int id,
@@ -132,7 +138,7 @@ public class MedicalRecordController {
 
 		final MedicalRecord updateMedicalRecord = service.serviceUpdate(id, medicalRecordUp);
 
-		log.debug("Ajout d'un MedicalRecord avec succes, index : {} Person:\n{}", id,
+		log.debug("Ajout d'un MedicalRecord avec succes, index ({}) Person -->\n{}", id,
 				JsonUtils.indenteJson(updateMedicalRecord));
 
 		ResponseEntity<MedicalRecord> responseEntity = ResponseEntity.ok(updateMedicalRecord);

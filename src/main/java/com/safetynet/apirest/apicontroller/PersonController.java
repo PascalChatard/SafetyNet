@@ -22,6 +22,8 @@ import com.safetynet.apirest.model.DataSrc;
 import com.safetynet.apirest.model.Person;
 import com.safetynet.apirest.utils.JsonUtils;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -30,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  * 
  */
 
+@Api(tags = "Person", value = "/person", description = "API pour les opérations CRUD sur la ressource Person.")
 @Slf4j
 @RestController
 @RequestMapping("/person")
@@ -65,6 +68,7 @@ public class PersonController {
 	 * @return une reference a l'objet supprime dans la dataSrc
 	 * 
 	 */
+	@ApiOperation(value = "Supprime un élément de la ressource Person à pârtir de so ID.")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Person> deletePerson(HttpServletRequest request,
 			@PathVariable int id) {
@@ -72,7 +76,7 @@ public class PersonController {
 		log.info("Requete HTTP {}, Uri: {}", request.getMethod(), request.getRequestURI());
 		Person person = service.serviceDeleteById(id);
 
-		log.debug("Suppression d'une Person avec succes, index : {} Person:\n{}", id,
+		log.debug("Suppression d'une Person avec succes, index ({}) Person -->\n{}", id,
 				JsonUtils.indenteJson(person));
 
 		ResponseEntity<Person> responseEntity = ResponseEntity.ok(person);
@@ -92,6 +96,7 @@ public class PersonController {
 	 * @return une reference a l'objet ajouter dans dataSrc
 	 * 
 	 */
+	@ApiOperation(value = "Ajoute un élément à la ressource Person.")
 	@PostMapping()
 	public ResponseEntity<Person> addPerson(HttpServletRequest request,
 			@Valid @RequestBody Person person)
@@ -104,7 +109,7 @@ public class PersonController {
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(index).toUri();
 
-		log.debug("Ajout d'une Person avec succes, index : {} Person:\n{}", index,
+		log.debug("Ajout d'une Person avec succes, index ({})  Person --> \n{}", index,
 				JsonUtils.indenteJson(addPerson));
 
 		ResponseEntity<Person> responseEntity = ResponseEntity.created(location).body(addPerson);
@@ -126,6 +131,7 @@ public class PersonController {
 	 * 
 	 */
 	@PutMapping(value = "/{id}")
+	@ApiOperation(value = "Modifie un élément de la ressource Person à pârtir de so ID.")
 	public ResponseEntity<Person> updatePerson(HttpServletRequest request, 
 			@PathVariable int id,
 			@RequestBody Person person) throws JsonProcessingException {
@@ -133,7 +139,7 @@ public class PersonController {
 		log.info("Requete HTTP {}, Uri: {}", request.getMethod(), request.getRequestURI());
 		Person updatePerson = service.serviceUpdate(id, person);
 
-		log.debug("Update d'une Person avec succes, index : {} Person:\n{}", id,
+		log.debug("Update d'une Person avec succes, index ({}) Person -->\n{}", id,
 				JsonUtils.indenteJson(updatePerson));
 
 		ResponseEntity<Person> responseEntity = ResponseEntity.ok(updatePerson);

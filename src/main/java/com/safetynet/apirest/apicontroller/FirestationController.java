@@ -24,6 +24,8 @@ import com.safetynet.apirest.model.Firestation;
 import com.safetynet.apirest.model.ListPersonsByFirestation;
 import com.safetynet.apirest.utils.JsonUtils;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -33,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  * 
  */
 
+@Api(tags = "Firestation", description = "API pour les opérations CRUD sur la ressource Firestation.")
 @Slf4j
 @RestController
 @RequestMapping("/firestation")
@@ -73,6 +76,7 @@ public class FirestationController {
 	 * @return une reference a l'objet supprime dans la dataSrc
 	 * 
 	 */
+	@ApiOperation(value = "Supprime un élément de la ressource Firestation à pârtir de so ID.")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Firestation> deleteFirestation(HttpServletRequest request,
 			@PathVariable int id) {
@@ -80,7 +84,7 @@ public class FirestationController {
 		log.info("Requete HTTP {}, Uri: {}", request.getMethod(), request.getRequestURI());
 		Firestation firestation = service.serviceDeleteById(id);
 
-		log.debug("Suppression d'une Firestation avec succes, index : {} Firestation:\n{}", id,
+		log.debug("Suppression d'une Firestation avec succes, index ({}) Firestation -->\n{}", id,
 				JsonUtils.indenteJson(firestation));
 
 		ResponseEntity<Firestation> responseEntity = ResponseEntity.ok(firestation);
@@ -100,6 +104,7 @@ public class FirestationController {
 	 * @return une reference a l'objet ajouter dans dataSrc
 	 * 
 	 */
+	@ApiOperation(value = "Ajoute un élément à la ressource Firestation.")
 	@PostMapping()
 	public ResponseEntity<Firestation> addFirestation(HttpServletRequest request,
 			@RequestBody Firestation firestation) {
@@ -111,7 +116,7 @@ public class FirestationController {
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(index).toUri();
 
-		log.debug("Ajout d'une Firestation avec succes, index : {} Firestation:\n{}",
+		log.debug("Ajout d'une Firestation avec succes, index ({}) Firestation -->\n{}",
 				index, JsonUtils.indenteJson(addFirestation));
 
 		ResponseEntity<Firestation> responseEntity = ResponseEntity.created(location).body(addFirestation);
@@ -131,6 +136,7 @@ public class FirestationController {
 	 * @return une reference a l'objet modifier dans dataSrc
 	 * 
 	 */
+	@ApiOperation(value = "Modifie un élément de la ressource Firestation à pârtir de so ID.")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Firestation> updatePerson(HttpServletRequest request,
 			@PathVariable int id,
@@ -139,7 +145,7 @@ public class FirestationController {
 		log.info("Requete HTTP {}, Uri: {}", request.getMethod(), request.getRequestURI());
 		final Firestation updateFirestation = service.serviceUpdate(id, firestation);
 
-		log.debug("Update d'une Firestation avec succes, index : {} Firestation:\n{}", id,
+		log.debug("Update d'une Firestation avec succes, index ({}) Firestation -->\n{}", id,
 				JsonUtils.indenteJson(updateFirestation));
 
 		ResponseEntity<Firestation> responseEntity = ResponseEntity.ok(updateFirestation);
@@ -163,6 +169,7 @@ public class FirestationController {
 	 * @return la liste des personnes trouvees et le decompte enfants/adultes
 	 * 
 	 */
+	@ApiOperation(value = "Demande la liste des personnes desservies par la caserne de pompiers.")
 	@GetMapping()
 	public ListPersonsByFirestation listOfPersonsCoverByFirestation(HttpServletRequest request,
 			HttpServletResponse response,
@@ -171,7 +178,7 @@ public class FirestationController {
 		log.info("Requete HTTP {}, Uri: {}", request.getMethod(), request.getRequestURI());
 		ListPersonsByFirestation listPersons = service.listOfPersonsCoverByFirestation(station);
 
-		log.debug("Liste des personnes desservies par la caserne n°:{} -->:\n{}", station,
+		log.debug("Liste des personnes desservies par la caserne n°({}) -->\n{}", station,
 				JsonUtils.indenteJson(listPersons));
 		log.info("Reponse ({}) requete HTTP {}, Uri: {}", response.getStatus(), request.getMethod(),
 				request.getRequestURI());

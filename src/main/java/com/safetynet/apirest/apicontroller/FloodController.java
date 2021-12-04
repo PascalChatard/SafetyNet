@@ -14,6 +14,8 @@ import com.safetynet.apirest.apiservice.FloodService;
 import com.safetynet.apirest.model.ListHousholdsByFirestationAndAddress;
 import com.safetynet.apirest.utils.JsonUtils;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -22,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  * 
  */
 
+@Api(tags = "/flood/stations?stations=<a list of station_numbers>", description = "Retourne une liste de tous les foyers desservis par la caserne de pompiers.")
 @Slf4j
 @RestController
 public class FloodController {
@@ -43,6 +46,7 @@ public class FloodController {
 	 * @return la liste des foyers/personnes trouvees par caserne et par adresse
 	 * 
 	 */
+	@ApiOperation(value = "Regroupe les personnes par adresse, les informations retenues sont: nom, age, numero de telephone et dossier medical.")
 	@GetMapping(value = "/flood/stations")
 	public List<ListHousholdsByFirestationAndAddress> listOfHousholdServedByStation(HttpServletRequest request,
 			HttpServletResponse response,

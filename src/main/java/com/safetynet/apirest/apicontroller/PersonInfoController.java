@@ -14,6 +14,8 @@ import com.safetynet.apirest.apiservice.PersonInfoService;
 import com.safetynet.apirest.model.PersonInfo;
 import com.safetynet.apirest.utils.JsonUtils;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -22,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  * 
  */
 
+@Api(tags = "/personInfo?firstName=<firstName>&lastName=<lastname>", description = "Retourne une liste des personnes ayant l'identité firstName et lastName.")
 @Slf4j
 @RestController
 public class PersonInfoController {
@@ -43,6 +46,7 @@ public class PersonInfoController {
 	 * @return la liste des personnes trouvees
 	 * 
 	 */
+	@ApiOperation(value = "Les informations retenues sont: nom, adresse, age, email et dossier medical.")
 	@GetMapping(value = "/personInfo")
 	public List<PersonInfo> getNameAdrAgeEmailAndMedicalRecord(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam("firstName") String firstName,
