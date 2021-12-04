@@ -106,8 +106,8 @@ public class MedicalRecordController {
 		int index = dataSrc.getMedicalrecords().indexOf(addMedicalRecord);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(index).toUri();
 
-		log.debug("Ajout d'un MedicalRecord avec succes, index ({)} Person -->\n{}",
-				index, JsonUtils.indenteJson(addMedicalRecord));
+		log.debug("Ajout d'un MedicalRecord avec succes, index ({}) MedicalRecord -->\n{}", index,
+				JsonUtils.indenteJson(addMedicalRecord));
 
 		ResponseEntity<MedicalRecord> responseEntity = ResponseEntity.created(location).body(addMedicalRecord);
 
@@ -138,7 +138,7 @@ public class MedicalRecordController {
 
 		final MedicalRecord updateMedicalRecord = service.serviceUpdate(id, medicalRecordUp);
 
-		log.debug("Ajout d'un MedicalRecord avec succes, index ({}) Person -->\n{}", id,
+		log.debug("Ajout d'un MedicalRecord avec succes, index ({}) MedicalRecord -->\n{}", id,
 				JsonUtils.indenteJson(updateMedicalRecord));
 
 		ResponseEntity<MedicalRecord> responseEntity = ResponseEntity.ok(updateMedicalRecord);

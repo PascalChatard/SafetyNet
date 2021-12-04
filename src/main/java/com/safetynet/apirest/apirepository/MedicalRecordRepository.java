@@ -82,7 +82,7 @@ public class MedicalRecordRepository implements IRepository<MedicalRecord> {
 		MedicalRecord medicalRecord = dataSrc.getMedicalrecords().get(id);
 		// le nom et le prenom correspondent?
 		if (DataSrcUtils.isMatchedIdentity(medicalRecord, medicalRecordUp)) {
-			medicalRecord = dataSrc.getMedicalrecords().set(id, medicalRecord);
+			medicalRecord = dataSrc.getMedicalrecords().set(id, medicalRecordUp);
 
 			log.debug("Mise à jour du dossier medical avec succes, index ({}) --> \n{}", id,
 					JsonUtils.indenteJson(medicalRecord));
