@@ -160,7 +160,7 @@ class FloodControllerIT {
 				.andExpect(jsonPath("$.[1].households.[2].habitants.size()").value("3"))
 				.andExpect(jsonPath("$.[1].households.[2].habitants[0].firstName").value("Brian"))
 				.andExpect(jsonPath("$.[1].households.[2].habitants[0].lastName").value("Stelzer"))
-				.andExpect(jsonPath("$.[1].households.[2].habitants[0].age").value("45"))
+				.andExpect(jsonPath("$.[1].households.[2].habitants[0].age").value("46"))
 				.andExpect(jsonPath("$.[1].households.[2].habitants[0].phone").value("841-874-7784"))
 				.andExpect(jsonPath("$.[1].households.[2].habitants[0].medications.size()").value("2"))
 				.andExpect(jsonPath("$.[1].households.[2].habitants[0].medications.[0]").value("ibupurin:200mg"))

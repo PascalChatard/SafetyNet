@@ -27,8 +27,8 @@
           <AppenderRef ref="Console"></AppenderRef>
           <AppenderRef ref="RollingFile" />			
         </Root>
-		<!-- LOG "com.safetynet.apirest*" at DEBUG level -->
-        <Logger name="com.safetynet.apirest" level="debug" additivity="false">
+		<!-- LOG "com.safetynet.apirest*" at INFO level -->
+        <Logger name="com.safetynet.apirest" level="INFO" additivity="false">
           <AppenderRef ref="Console"/>
           <AppenderRef ref="RollingFile" />			
         </Logger>
